@@ -1,6 +1,6 @@
 # RetriGen: Retrieval-Augmented Assertion Generation with Large Language Models
 
-This is the official PyTorch implementation for the following ISSTA 2024 paper:
+This is the official PyTorch implementation for the following ISSTA 2024 submission:
 
 Title: RetriGen: Retrieval-Augmented Assertion Generation with Large Language Models
 
@@ -45,7 +45,7 @@ tips: torch version may depend on CUDA version, so you should check the version 
 
 ## Fine-tuned model and data
 
-Due to model size, Fine-tuned model will be available in few days.
+Due to the huge model size, all trained model will be available upon accecption.
 
 Raw data are in `./RetriGen/dataset` folder, following commands below to get dataset after Retrival
 
