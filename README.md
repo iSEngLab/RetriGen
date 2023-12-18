@@ -4,6 +4,8 @@ This is the official PyTorch implementation for the following ISSTA 2024 submiss
 
 Title: RetriGen: Retrieval-Augmented Assertion Generation with Large Language Models
 
+**The Appendix Table showing comparisons of selected LLMs in RQ3 is uploaded in [our Appendix.pdf](/Appendix.pdf)**
+
 ## Environment Setup
 
 ```bash
