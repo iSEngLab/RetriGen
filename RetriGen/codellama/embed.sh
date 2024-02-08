@@ -12,7 +12,7 @@ for i in $(seq 1 `expr ${#source_paths[@]}`); do
     source=${source_paths[i]}
     target=${target_paths[i]}
 
-    python embed.sh \
+    python codellama_embedding.py \
         --source_path ${source} \
         --target_path ${target}
 done

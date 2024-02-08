@@ -11,7 +11,7 @@ Title: RetriGen: Retrieval-Augmented Assertion Generation with Large Language Mo
 ```bash
 conda env create --name RetriGen python=3.9
 conda activate RetriGen
-pip install -r requiremtns.txt
+pip install -r requirements.txt
 ```
 
 tips: torch version may depend on CUDA version, so you should check the version of CUDA and replace it in `requirements.txt`.
@@ -54,7 +54,7 @@ All trained models will be available upon accecption.
 
 Raw data are in `./RetriGen/dataset` folder, following commands below to get dataset after Retrival
 
-### unzip dataset
+### Unzip dataset
 
 ```bash
 cd RetriGen/dataset
@@ -62,9 +62,22 @@ unzip NewDataSet.zip
 unzip OldDataSet.zip
 ```
 
-### get codellama embedding result
+### Get codellama embedding result
 
 Using [Ollama](http://ollama.ai) to deploy `codellama:7b` to get `codellama` embedding results.
+
+#### How to deploy Ollama
+
+Check [here](https://ollama.ai/download) to download Ollama.
+
+After download successfully, using commands below to deploy `codellama:7b`
+
+```bash
+ollama pull codellama:7b
+ollama serve
+```
+
+#### Reproduce result
 
 After deploy `codellama:7b` locally, run the command below:
 
@@ -73,7 +86,7 @@ cd RetriGen/codellama
 sh embed.sh
 ```
 
-### get RetriGen dataset
+### Get RetriGen dataset
 
 run the commands below (taking NewDataSet as an example, OldDataSet needs to replace the dataset path in the script) to get RetriGen fine-tune dataset:
 
@@ -112,7 +125,7 @@ sh run-RetriGen.sh
 
 ## RQ1
 
-### calc accuracy
+### Calculate accuracy
 
 run the commands below and get the accuracy result:
 
@@ -128,7 +141,7 @@ sh run-calc-RAadapt-NN-acc.sh
 sh run-calc-RetriGen-acc.sh
 ```
 
-### calc CodeBLEU
+### Calculate CodeBLEU
 
 run the commands below to get the `CodeBLEU result`:
 
@@ -144,7 +157,7 @@ sh run-calc-RAadapt-NN-codebleu.sh
 sh run-calc-RetriGen-codebleu.sh
 ```
 
-### calc assert type
+### Calculate assert type
 
 run the commands below to get the assert type results:
 
@@ -156,7 +169,7 @@ sh calc_assert_type_old.sh
 
 ## RQ2
 
-### get RetriGen-token and RetriGen-embed dataset
+### Get RetriGen-token and RetriGen-embed dataset
 
 run the commands below to get `RetiGen-token` and `RetriGen-embed` training dataset:
 
@@ -166,7 +179,7 @@ sh get-RetriGen-token-dataset.sh
 sh get-RetriGen-embed-dataset.sh
 ```
 
-### reproduce the result
+### Reproduce the result
 
 ```bash
 cd RQ2
