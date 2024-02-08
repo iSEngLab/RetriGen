@@ -1,6 +1,6 @@
-train_data_file="../hybrid/result/NewDataSet/train/assert_train_new_alpha_0.5.csv"
-test_data_file="../hybrid/result/NewDataSet/test/assert_test_new_alpha_0.5.csv"
-val_data_file="../hybrid/result/NewDataSet/val/assert_val_new_alpha_0.5.csv"
+train_data_file="./hybrid/result/NewDataSet/train/assert_train_new_alpha_0.5.csv"
+test_data_file="./hybrid/result/NewDataSet/test/assert_test_new_alpha_0.5.csv"
+val_data_file="./hybrid/result/NewDataSet/val/assert_val_new_alpha_0.5.csv"
 
 train_batch_size=8
 eval_batch_size=8
