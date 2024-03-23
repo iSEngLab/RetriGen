@@ -4,7 +4,7 @@ This is the official PyTorch implementation for the following ICSE 2025 submissi
 
 Title: Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
-**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in [our Appendix.pdf](/Appendix.pdf)**
+**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in our Appendix.pdf**
 
 ## Environment Setup
 
