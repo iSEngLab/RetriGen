@@ -1,6 +1,6 @@
 # Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
-This is the official PyTorch implementation for the following ICSE 2024 submission:
+This is the official PyTorch implementation for the following ICSE 2025 submission:
 
 Title: Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
