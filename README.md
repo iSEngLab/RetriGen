@@ -1,10 +1,10 @@
-# RetriGen: Retrieval-Augmented Assertion Generation with Large Language Models
+# Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
-This is the official PyTorch implementation for the following ISSTA 2024 submission:
+This is the official PyTorch implementation for the following ICSE 2024 submission:
 
-Title: RetriGen: Retrieval-Augmented Assertion Generation with Large Language Models
+Title: Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
-**The Appendix Table showing comparisons of selected LLMs in RQ3 is uploaded in [our Appendix.pdf](/Appendix.pdf)**
+**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in [our Appendix.pdf](/Appendix.pdf)**
 
 ## Environment Setup
 
