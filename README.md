@@ -1,11 +1,5 @@
 # Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
 
-This is the official PyTorch implementation for the following ICSE 2025 submission:
-
-Title: Improving Deep Assertion Generation via Fine-Tuning Retrieval-Augmented Pre-trained Language Models
-
-**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in our [Appendix.pdf](https://anonymous.4open.science/r/RetriGen/Appendix.pdf)**
-
 ## Environment Setup
 
 ```bash
@@ -191,6 +185,8 @@ sh token/run-RetriGen-token.sh
 after reproduce the result, you can use RQ1 code to calc accuracy and CodeBLEU
 
 ## RQ3
+
+**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in our [Appendix.pdf](https://anonymous.4open.science/r/RetriGen/Appendix.pdf)**
 
 run the following commands in the model you want to reproduce the result in RQ3:
 
