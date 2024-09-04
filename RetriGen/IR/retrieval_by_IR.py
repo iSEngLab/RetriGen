@@ -142,13 +142,17 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # Params
-    parser.add_argument("--codebase_path", default="../dataset/NewDataSet/assert_train_new.csv", type=str, required=False,
+    parser.add_argument("--codebase_path", default="../dataset/NewDataSet/assert_train_new.csv", type=str,
+                        required=False,
                         help="codebase file path.")
-    parser.add_argument("--query_data_path", default="../dataset/NewDataSet/assert_test_new.csv", type=str, required=False,
+    parser.add_argument("--query_data_path", default="../dataset/NewDataSet/assert_test_new.csv", type=str,
+                        required=False,
                         help="query data file path.")
-    parser.add_argument("--output_sim_path", default="./result/NewDataSet/total_sim_{}.parquet", type=str, required=False,
+    parser.add_argument("--output_sim_path", default="./result/NewDataSet/total_sim_{}.parquet", type=str,
+                        required=False,
                         help="output sim path.")
-    parser.add_argument("--output_result_path", default="./result/NewDataSet/total_result.csv", type=str, required=False,
+    parser.add_argument("--output_result_path", default="./result/NewDataSet/total_result.csv", type=str,
+                        required=False,
                         help="output result path.")
     parser.add_argument("--search_self", default=False, type=bool, required=False,
                         help="whether codebase is same as query data or not")
@@ -164,4 +168,3 @@ if __name__ == '__main__':
     if args.search_self:
         logger.info("search codebase self")
     main(args)
-
