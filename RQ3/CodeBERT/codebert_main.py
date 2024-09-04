@@ -153,7 +153,6 @@ def train(args, train_dataset, model, tokenizer, eval_dataset):
                 optimizer.zero_grad()
                 scheduler.step()
                 global_step += 1
-                output_flag = True
                 avg_loss = round(np.exp((tr_loss - logging_loss) / (global_step - tr_nb)), 4)
                 if global_step % args.save_steps == 0:
                     # placeholder of evaluation

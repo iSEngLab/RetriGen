@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function
 import argparse
+import json
 import logging
 import os
 import random
@@ -35,12 +36,16 @@ class TextDataset(Dataset):
             file_path = args.eval_data_file
         elif file_type == "test":
             file_path = args.test_data_file
+        else:
+            raise ValueError("file_type must be either train, eval or test")
         self.examples = []
-        df = pd.read_csv(file_path)
-        sources = df["source"].tolist()
-        labels = df["target"].tolist()
+        with open(file_path, "r", encoding="utf-8") as f:
+            lines = [json.loads(line.strip()) for line in f.readlines()]
+            sources = [line["source"] for line in lines]
+            targets = [line["target"] for line in lines]
+
         for i in tqdm(range(len(sources))):
-            self.examples.append(convert_examples_to_features(sources[i], labels[i], tokenizer, args))
+            self.examples.append(convert_examples_to_features(sources[i], targets[i], tokenizer, args))
         if file_type == "train":
             for example in self.examples[:3]:
                 logger.info("*** Example ***")
@@ -366,10 +371,8 @@ def main():
     set_seed(args)
     # tokenizer = RobertaTokenizer.from_pretrained("Salesforce/codet5-base")
     # model = T5ForConditionalGeneration.from_pretrained("Salesforce/codet5-base")
-    tokenizer = RobertaTokenizer.from_pretrained("Salesforce/codet5-base")
-    tokenizer.add_tokens(["<S2SV_StartBug>", "<S2SV_EndBug>", "<S2SV_blank>", "<S2SV_ModStart>", "<S2SV_ModEnd>"])
-    model = T5ForConditionalGeneration.from_pretrained("Salesforce/codet5-base")
-    model.resize_token_embeddings(len(tokenizer))
+    tokenizer = RobertaTokenizer.from_pretrained("./codet5-base")
+    model = T5ForConditionalGeneration.from_pretrained("./codet5-base")
     model.to(device)
     logger.info("Training/evaluation parameters %s", args)
     # Training
