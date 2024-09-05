@@ -10,7 +10,7 @@ import torch
 import datasets
 import transformers
 import matplotlib.pyplot as plt
-from transformers import Seq2SeqTrainer, DataCollatorForSeq2Seq, EarlyStoppingCallback
+from transformers import Trainer, DataCollatorForSeq2Seq, EarlyStoppingCallback
 from datasets import load_dataset
 from functools import partial
 
@@ -51,16 +51,14 @@ class DataArguments:
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default=None)
-    torch_dtype: torch.dtype = field(default=torch.float16)
+    torch_dtype: torch.dtype = field(default=torch.bfloat16)
     device_map: str = field(default="auto")
-    pad_token: str = field(default="<pad>")
-    pad_token_id: int = field(default=1)
     eos_token: str = field(default="<|endoftext|>")
     eos_token_id: int = field(default="2")
 
 
 @dataclass
-class TrainingArguments(transformers.Seq2SeqTrainingArguments):
+class TrainingArguments(transformers.TrainingArguments):
     output_dir: str = field(default="./saved_models")
     optim: str = field(default="adamw_torch")
     model_max_length: int = field(
@@ -75,7 +73,7 @@ class TrainingArguments(transformers.Seq2SeqTrainingArguments):
     lr_scheduler_type: str = field(default="cosine")
     warmup_steps: int = field(default=1000)
     logging_steps: int = field(default=1)
-    evaluation_strategy: str = field(default="epoch")
+    eval_strategy: str = field(default="epoch")
     eval_steps: int = field(default=1000)
     save_strategy: str = field(default="epoch")
     save_steps: int = field(default=1000)
@@ -189,14 +187,14 @@ def get_data_module(tokenizer, training_args, data_args) -> Dict:
         train_dataset = dataset["train"]
         train_dataset = train_dataset.map(
             partial(generate_and_tokenize_prompt, tokenizer=tokenizer, training_args=training_args, stage="train"),
-            num_proc=data_args.num_proc
+            num_proc=data_args.num_proc,
         )
         result["train_dataset"] = train_dataset
     if data_args.eval_filename is not None:
         eval_dataset = dataset["eval"]
         eval_dataset = eval_dataset.map(
             partial(generate_and_tokenize_prompt, tokenizer=tokenizer, training_args=training_args, stage="eval"),
-            num_proc=data_args.num_proc
+            num_proc=data_args.num_proc,
         )
         result["eval_dataset"] = eval_dataset
 
@@ -214,7 +212,7 @@ def build_model(model_args: "ModelArguments") -> transformers.PreTrainedModel:
         pretrained_model_name_or_path=model_args.model_name_or_path,
         torch_dtype=model_args.torch_dtype,
         # can't use "auto" in accelerate launch
-        # device_map=model_args.device_map,
+        device_map=model_args.device_map,
     )
 
 
@@ -230,9 +228,10 @@ def build_tokenizer(model_args: "ModelArguments",
     if tokenizer.eos_token is None:
         tokenizer.eos_token = model_args.eos_token
         tokenizer.eos_token_id = model_args.eos_token_id
+    logger.info(f"tokenizer pad_token {tokenizer.pad_token}, tokenizer pad_token_id: {tokenizer.pad_token_id}")
     if tokenizer.pad_token is None:
-        tokenizer.pad_token = model_args.pad_token
-        tokenizer.pad_token_id = model_args.pad_token_id
+        tokenizer.pad_token = tokenizer.unk_token
+        tokenizer.pad_token_id = tokenizer.unk_token_id
 
     return tokenizer
 
@@ -273,7 +272,7 @@ def main():
     tokenizer = build_tokenizer(model_args, training_args)
 
     data_module = get_data_module(tokenizer=tokenizer, training_args=training_args, data_args=data_args)
-    trainer = Seq2SeqTrainer(
+    trainer = Trainer(
         model=model,
         tokenizer=tokenizer,
         args=training_args,
