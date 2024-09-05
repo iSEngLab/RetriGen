@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 **/datas
+**/saveD_models
 
 # Distribution / packaging
 .Python
@@ -133,6 +134,9 @@ dmypy.json
 outputs/
 clustering/
 data/
+!d4j/data
+d4j/data/evosuite_buggy_tests
+d4j/data/evosuite_regression_all
 /cedar_gpu_node_pretraining_job.sh
 /cedar_gpu_node_pretraining_job2.sh
 /cedar_finetuning_job.sh

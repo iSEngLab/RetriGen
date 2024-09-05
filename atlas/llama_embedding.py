@@ -4,7 +4,7 @@ import logging
 import transformers
 from dataclasses import dataclass, field
 from tqdm import tqdm
-from configs import read_examples
+from configs import read_csv_examples
 from langchain_ollama import OllamaEmbeddings
 from typing import List, Dict
 
@@ -58,11 +58,10 @@ def main():
     if not os.path.exists(embedding_args.output_dir):
         os.makedirs(embedding_args.output_dir)
 
-    examples = read_examples(embedding_args.file_path)
+    examples = read_csv_examples(embedding_args.file_path)
     batch_size = embedding_args.batch_size
 
     params = get_param_generator(examples, batch_size)
-    result_examples = []
     embeddings = OllamaEmbeddings(
         model="codellama:7b-code-fp16"
     )

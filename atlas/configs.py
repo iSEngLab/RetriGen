@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-import json
 from typing import List, Dict
+import json
+import pandas as pd
 
 
 @dataclass
@@ -17,5 +18,18 @@ class RetrievalArguments:
 def read_examples(file_path: str) -> List[Dict[str, str]]:
     with open(file_path, "r", encoding="utf-8") as file:
         examples = [json.loads(line.strip()) for line in file.readlines()]
+
+    return examples
+
+
+def read_csv_examples(file_path: str) -> List[Dict[str, str]]:
+    df = pd.read_csv(file_path)
+    examples = []
+
+    for index, row in df.iterrows():
+        examples.append({
+            "source": row["source"],
+            "target": row["target"],
+        })
 
     return examples

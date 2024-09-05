@@ -6,8 +6,7 @@ train_batch_size=16
 eval_batch_size=16
 test_batch_size=16
 
-result_file_path="result/NewDataSet/RetriGen_new_alpha.txt"
-pred_file_path="result/NewDataSet/RetriGen_new_alpha_prediction.csv"
+pred_file_path="results/generated_predictions.jsonl"
 
 CUDA_VISIBLE_DEVICES=1 python codet5_main.py \
     --output_dir=./saved_models \
@@ -19,7 +18,7 @@ CUDA_VISIBLE_DEVICES=1 python codet5_main.py \
     --eval_data_file=${val_data_file} \
     --epochs 75 \
     --encoder_block_size 512 \
-    --decoder_block_size  \
+    --decoder_block_size 256 \
     --train_batch_size ${train_batch_size} \
     --eval_batch_size ${eval_batch_size} \
     --test_batch_size ${test_batch_size} \
