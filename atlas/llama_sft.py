@@ -53,8 +53,6 @@ class ModelArguments:
     model_name_or_path: Optional[str] = field(default=None)
     torch_dtype: torch.dtype = field(default=torch.bfloat16)
     device_map: str = field(default="auto")
-    eos_token: str = field(default="<|endoftext|>")
-    eos_token_id: int = field(default="2")
 
 
 @dataclass
@@ -224,10 +222,6 @@ def build_tokenizer(model_args: "ModelArguments",
         padding_side="right",
         use_fast=True,
     )
-    logger.info(f"tokenizer eos_token {tokenizer.eos_token}, tokenizer eos_token_id: {tokenizer.eos_token_id}")
-    if tokenizer.eos_token is None:
-        tokenizer.eos_token = model_args.eos_token
-        tokenizer.eos_token_id = model_args.eos_token_id
     logger.info(f"tokenizer pad_token {tokenizer.pad_token}, tokenizer pad_token_id: {tokenizer.pad_token_id}")
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.unk_token
