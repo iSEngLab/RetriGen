@@ -2,11 +2,11 @@ CUDA_IDS=$1
 OUTPUT_DIR=$2
 DATA_PATH=$3
 
-PYTHONUNBUFFERED=1 DS_SKIP_CUDA_CHECK=1 CUDA_VISIBLE_DEVICES=${CUDA_IDS} python llama_sft.py \
+PYTHONUNBUFFERED=1 CUDA_VISIBLE_DEVICES=${CUDA_IDS} python llama_sft.py \
             --do_train \
             --do_eval \
             --bf16 \
-            --model_name_or_path codellama/codellama-7b-hf/ \
+            --model_name_or_path /data/Models/CodeLLama/base/codellama-7b-hf/ \
             --model_max_length 1024 \
             --per_device_train_batch_size 16 \
             --per_device_eval_batch_size 8 \
