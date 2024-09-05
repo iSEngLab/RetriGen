@@ -1,3 +1,4 @@
+import json
 import logging
 import sys
 import os
@@ -35,12 +36,8 @@ class DataArguments:
 @dataclass
 class ModelArguments:
     model_name_or_path: Optional[str] = field(default=None)
-    torch_dtype: torch.dtype = field(default=torch.float16)
+    torch_dtype: torch.dtype = field(default=torch.bfloat16)
     device_map: str = field(default="auto")
-    pad_token: str = field(default="<pad>")
-    pad_token_id: int = field(default=1)
-    eos_token: str = field(default="<|endoftext|>")
-    eos_token_id: int = field(default="2")
 
 
 @dataclass
@@ -67,6 +64,7 @@ def build_model(model_args: "ModelArguments") -> transformers.PreTrainedModel:
     return transformers.AutoModelForCausalLM.from_pretrained(
         pretrained_model_name_or_path=model_args.model_name_or_path,
         torch_dtype=model_args.torch_dtype,
+        device_map=model_args.device_map
     )
 
 
@@ -78,12 +76,8 @@ def build_tokenizer(model_args: "ModelArguments") -> transformers.PreTrainedToke
     )
     logger.info(f"tokenizer pad_token {tokenizer.pad_token}, tokenizer pad_token_id: {tokenizer.pad_token_id}")
     if tokenizer.pad_token is None:
-        tokenizer.pad_token = model_args.pad_token if tokenizer.eos_token is None else tokenizer.eos_token
-        tokenizer.pad_token_id = model_args.pad_token_id if tokenizer.eos_token_id is None else tokenizer.eos_token_id
-    logger.info(f"tokenizer eos_token {tokenizer.eos_token}, tokenizer eos_token_id: {tokenizer.eos_token_id}")
-    if tokenizer.eos_token is None:
-        tokenizer.eos_token = model_args.eos_token
-        tokenizer.eos_token_id = model_args.eos_token_id
+        tokenizer.pad_token = tokenizer.unk_token
+        tokenizer.pad_token_id = tokenizer.unk_token_id
 
     return tokenizer
 
@@ -137,12 +131,14 @@ def main():
 
         predict_results.append(tmp_dict)
 
-    output_path = os.path.join(generation_args.output_dir, "test.output")
-    gold_path = os.path.join(generation_args.output_dir, "test.gold")
-    with open(output_path, "w", encoding="utf-8") as output_file, open(gold_path, "w", encoding="utf-8") as gold_file:
+    output_path = os.path.join(generation_args.output_dir, "generated_predictions.jsonl")
+    with open(output_path, "w", encoding="utf-8") as output_file:
         for idx, predict_result in enumerate(predict_results):
-            output_file.write(f"{idx}\t{predict_result['predict']}\n")
-            gold_file.write(f"{idx}\t{predict_result['label']}\n")
+            tmp_dict = {
+                "predict": predict_result["predict"],
+                "label": predict_result["label"]
+            }
+            output_file.write(json.dumps(tmp_dict) + "\n")
 
 
 if __name__ == "__main__":
