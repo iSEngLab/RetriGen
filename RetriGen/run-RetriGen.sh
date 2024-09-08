@@ -2,9 +2,9 @@ train_data_file="datas/train.jsonl"
 test_data_file="datas/test.jsonl"
 val_data_file="datas/valid.jsonl"
 
-train_batch_size=16
-eval_batch_size=16
-test_batch_size=16
+train_batch_size=8
+eval_batch_size=8
+test_batch_size=8
 
 pred_file_path="results/generated_predictions.jsonl"
 
@@ -27,6 +27,5 @@ CUDA_VISIBLE_DEVICES=1 python codet5_main.py \
     --n_gpu 1 \
     --evaluate_during_training \
     --num_beams 1 \
-    --result_file_path ${result_file_path} \
     --pred_file_path ${pred_file_path} \
     --seed 123456

@@ -59,7 +59,7 @@ def calc_similarities_batch(param: BatchParam,
                                             leave=False, total=len(ir_results), position=1):
         # Need to normalize cos_sim to [0, 1]
         merged_result = [(1 + cos_sim) / 2 + ir_sim for cos_sim, ir_sim in zip(embedding_result, ir_result)]
-        sorted_merged_result = sorted(enumerate(merged_result), key=lambda x: x[1], reverse=True)[:100]
+        sorted_merged_result = sorted(enumerate(merged_result), key=lambda x: x[1], reverse=True)[:10]
         top_100_results.append([idx for idx, _ in sorted_merged_result])
 
     return top_100_results

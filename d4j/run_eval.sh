@@ -1,5 +1,5 @@
 N_JOBS=${1:-20}
-TOTAL=10
+TOTAL=1
 
 BUGGY_GEN_DIR="data/evosuite_buggy_regression_all"
 BUGGY_TEST_DIR="data/evosuite_buggy_tests"

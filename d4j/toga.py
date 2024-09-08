@@ -36,7 +36,7 @@ def main():
 
     print('preparing assertion model inputs')
     vocab = np.load('data/evo_vocab.npy', allow_pickle=True).item()
-    assert_input_file = os.path.join(base_dir, 'assert_model_inputs.csv')
+    assert_input_file = os.path.join(base_dir, 'retrieval_assert_model_inputs.csv')
     if not os.path.exists(assert_input_file):
         method_test_assert_data, idxs = assertion_data.get_model_inputs(tests, methods, vocab, metadata)
         assert_inputs_df = pd.DataFrame(method_test_assert_data,

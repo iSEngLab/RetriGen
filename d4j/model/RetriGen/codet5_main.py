@@ -3,6 +3,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import random
 import numpy as np
 import torch
@@ -39,10 +40,9 @@ class TextDataset(Dataset):
         else:
             raise ValueError("file_type must be either train, eval or test")
         self.examples = []
-        with open(file_path, "r", encoding="utf-8") as f:
-            lines = [json.loads(line.strip()) for line in f.readlines()]
-            sources = [line["source"] for line in lines]
-            targets = [line["target"] for line in lines]
+        df = pd.read_csv(file_path)
+        sources = df["source"].tolist()
+        targets = df["target"].tolist()
 
         for i in tqdm(range(len(sources))):
             self.examples.append(convert_examples_to_features(sources[i], targets[i], tokenizer, args))
@@ -222,6 +222,18 @@ def evaluate(args, model, tokenizer, eval_dataset, eval_when_training=False):
     return eval_loss
 
 
+def compare_strings_ignore_whitespace(str1, str2):
+    # 移除字符串中的空格
+    str1_without_space = re.sub(r'\s', '', str1)
+    str2_without_space = re.sub(r'\s', '', str2)
+
+    # 使用re.match()函数进行匹配比较
+    if re.match(f'^{re.escape(str1_without_space)}$', str2_without_space):
+        return True
+    else:
+        return False
+
+
 def test(args, model, tokenizer, test_dataset, best_threshold=0.5):
     # build dataloader
     test_sampler = SequentialSampler(test_dataset)
@@ -229,7 +241,7 @@ def test(args, model, tokenizer, test_dataset, best_threshold=0.5):
     # Test!
     logger.info("***** Running Test *****")
     logger.info("  Num examples = %d", len(test_dataset))
-    logger.info("  Batch size = %d", args.eval_batch_size)
+    logger.info("  Batch size = %d", args.test_batch_size)
     nb_eval_steps = 0
     model.eval()
     accuracy = []
@@ -261,22 +273,23 @@ def test(args, model, tokenizer, test_dataset, best_threshold=0.5):
             raw_predictions.append(prediction)
         nb_eval_steps += 1
 
-    # calculate accuracy
-    test_result = round(sum(accuracy) / len(accuracy), 4)
-    logger.info("***** Test results *****")
-    logger.info(f"Test Accuracy: {str(test_result)}")
-
-    with open(args.test_data_file, "r", encoding="utf-8") as f, open(
-        args.pred_file_path, "w", encoding="utf-8") as output_f:
-        lines = [json.loads(line.strip()) for line in f.readlines()]
-        for line, pred, match in zip(lines, raw_predictions, accuracy):
-            tmp_dict = {
-                "source": line["source"],
-                "target": line["target"],
-                "prediction": pred,
-                "match": match,
-            }
-            output_f.write(json.dumps(tmp_dict) + "\n")
+    df = pd.read_csv(args.test_data_file)
+    df['assert_pred'] = raw_predictions
+    targets = df['target']
+    match = []
+    for p, t in zip(raw_predictions, targets):
+        try:
+            if compare_strings_ignore_whitespace(p, t):
+                match.append(1)
+            else:
+                match.append(0)
+        except Exception as e:
+            logger.error(f"encounter error {e} with {p} and {t}")
+            match.append(0)
+    if not os.path.exists(args.output_dir):
+        os.makedirs(args.output_dir)
+    df['match'] = match
+    df.drop('source', axis=1).to_csv(os.path.join(args.output_dir, 'assertion_preds.csv'), index=False)
 
 
 def main():
@@ -323,8 +336,6 @@ def main():
                         help="Whether to load model from checkpoint.")
     parser.add_argument("--evaluate_during_training", action='store_true',
                         help="Run evaluation during training at each logging step.")
-    parser.add_argument("--pred_file_path", default=None, type=str,
-                        help="Test result prediction file path")
     parser.add_argument("--train_batch_size", default=4, type=int,
                         help="Batch size per GPU/CPU for training.")
     parser.add_argument("--eval_batch_size", default=4, type=int,

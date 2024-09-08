@@ -10,7 +10,6 @@ from torch.utils.data import DataLoader, Dataset, SequentialSampler, RandomSampl
 from transformers import (AdamW, get_linear_schedule_with_warmup,
                           T5ForConditionalGeneration, RobertaTokenizer, T5Config)
 from tqdm import tqdm
-import pandas as pd
 
 cpu_cont = 16
 logger = logging.getLogger(__name__)
