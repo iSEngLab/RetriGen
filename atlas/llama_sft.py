@@ -10,7 +10,12 @@ import torch
 import datasets
 import transformers
 import matplotlib.pyplot as plt
-from transformers import Trainer, DataCollatorForSeq2Seq, EarlyStoppingCallback
+from transformers import (
+    PreTrainedTokenizer,
+    Trainer,
+    DataCollatorForSeq2Seq,
+    EarlyStoppingCallback
+)
 from datasets import load_dataset
 from functools import partial
 
@@ -18,6 +23,16 @@ logger = logging.getLogger(__name__)
 IGNORE_INDEX = -100
 # Name of the files used for checkpointing
 TRAINER_STATE_NAME = "trainer_state.json"
+
+PROMPT = """You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions.
+
+@@ Instruction
+Implement an assertion statement to replace "<AssertPlaceHolder>". The assertion needs to test the focal method for correctness. The test case and focal method is:
+
+{instruction}
+
+@@ Response
+"""
 
 
 @dataclass
@@ -81,6 +96,7 @@ class TrainingArguments(transformers.TrainingArguments):
     load_best_model_at_end: bool = field(default=True)
     save_total_limit: int = field(default=10)
     seed: int = field(default=42)
+    use_instruct: bool = field(default=False)
     early_stop_patience: int = field(
         default=2,
         metadata={"help": "Early stopping patience for early stopping"}
@@ -132,7 +148,10 @@ def plot_loss(save_dictionary: os.PathLike, keys: List[str] = ["loss"]) -> None:
         print("Figure saved at:", figure_path)
 
 
-def tokenize(text, tokenizer, training_args, add_eos_token=True):
+def tokenize(text,
+             tokenizer: PreTrainedTokenizer,
+             training_args: TrainingArguments,
+             add_eos_token: bool = True):
     result = tokenizer(
         text,
         truncation=True,
@@ -160,8 +179,16 @@ def get_prompt_target(sample):
     return sample['source'], sample['target']
 
 
-def generate_and_tokenize_prompt(sample, tokenizer, training_args, stage: str = "train"):
+def generate_and_tokenize_prompt(sample,
+                                 tokenizer: PreTrainedTokenizer,
+                                 training_args: TrainingArguments,
+                                 stage: str = "train"):
     input_text, target = get_prompt_target(sample)
+
+    # Construct Instruction
+    if training_args.use_instruct:
+        input_text = PROMPT.format(instruction=input_text)
+
     full_text = input_text + target
     tokenized_full_text = tokenize(full_text, tokenizer, training_args)
     tokenized_input_text = tokenize(input_text, tokenizer, training_args)
