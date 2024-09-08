@@ -26,9 +26,9 @@ PYTHONUNBUFFERED=1 CUDA_VISIBLE_DEVICES=${CUDA_IDS} python llama_sft.py \
             --save_strategy epoch \
             --greater_is_better False \
             --logging_steps 10 \
-            --num_train_epochs 2 \
-            --save_total_limit 2 \
+            --num_train_epochs 1 \
+            --save_total_limit 1 \
             --output_dir ${OUTPUT_DIR} \
             --report_to tensorboard \
-            --early_stop_patience 2 \
+            --early_stop_patience 1 \
             --plot_loss
