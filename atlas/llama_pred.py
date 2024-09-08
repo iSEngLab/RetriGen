@@ -12,6 +12,16 @@ from datasets import load_dataset
 
 logger = logging.getLogger(__name__)
 
+PROMPT = """You are an exceptionally intelligent coding assistant that consistently delivers accurate and reliable responses to user instructions.
+
+@@ Instruction
+Implement an assertion statement to replace "<AssertPlaceHolder>". The assertion needs to test the focal method for correctness. The test case and focal method is:
+
+{instruction}
+
+@@ Response
+"""
+
 
 @dataclass
 class DataArguments:
@@ -49,6 +59,7 @@ class GenerationArguments:
     device: str = field(default="cuda")
     n_gpu: int = field(default=1)
     output_dir: str = field(default="./saved_models")
+    use_instruct: bool = field(default=False)
 
 
 def get_test_data(data_args) -> Dict:
@@ -109,6 +120,8 @@ def main():
     for idx, sample in tqdm(enumerate(dataset), total=len(dataset), desc="Generating..."):
         tmp_dict = {}
         source = sample["source"]
+        if generation_args.use_instruct:
+            source = PROMPT.format(instruction=source)
         inputs = tokenizer(source, return_tensors='pt', truncation=True, max_length=generation_args.max_length)
         inputs_len = inputs.input_ids.shape[1]
         input_ids = inputs.input_ids.to(generation_args.device)
