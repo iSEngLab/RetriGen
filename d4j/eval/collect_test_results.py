@@ -300,7 +300,8 @@ if __name__ == "__main__":
     test_F1 = 2 * test_P * test_R / (test_P + test_R)
 
     out_file = os.path.join(input_dir, result_dir, "test_data.csv")
-    result_df.drop_duplicates(subset=["project", "bug_num", "test_name"]).to_csv(out_file, index=False,encoding='utf-8')
+    result_df.drop_duplicates(subset=["project", "bug_num", "test_name"]).to_csv(out_file, index=False,
+                                                                                 encoding='utf-8', escapechar='\\')
     logging.info(f'saved {out_file}')
 
     grouped_bug = result_df.groupby(['project', 'bug_num'])

@@ -1,0 +1,8 @@
+Jsoup/4
+Math/22
+Jsoup/28
+Compress/9
+JxPath/7
+Math/66
+Compress/34
+Mockito/35

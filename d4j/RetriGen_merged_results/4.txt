@@ -1,0 +1,8 @@
+JacksonDatabind/16
+Math/22
+Math/62
+JxPath/7
+Closure/46
+Compress/34
+Jsoup/18
+Math/102

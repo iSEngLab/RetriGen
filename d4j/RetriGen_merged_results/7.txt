@@ -1,0 +1,6 @@
+Math/22
+Jsoup/41
+Chart/22
+JxPath/7
+Compress/34
+Math/46

@@ -15,8 +15,8 @@ from collections import OrderedDict
 
 
 def merge_bug_detection(agg_result_dir, fixed_result_dir, out_result_dir):
-    agg_bd_df = pd.read_csv(os.path.join(agg_result_dir, "bug_detection.csv"), dtype=str).fillna('')
-    fixed_bd_df = pd.read_csv(os.path.join(fixed_result_dir, "bug_detection.csv"), dtype=str).fillna('')
+    agg_bd_df = pd.read_csv(os.path.join(agg_result_dir, "bug_detection"), dtype=str).fillna('')
+    fixed_bd_df = pd.read_csv(os.path.join(fixed_result_dir, "bug_detection"), dtype=str).fillna('')
 
     def _build_bd_dict(bd_df: DataFrame):
         result_dict = OrderedDict()

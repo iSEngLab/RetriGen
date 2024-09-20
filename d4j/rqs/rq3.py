@@ -20,7 +20,7 @@ def cal_result(data_dir="data"):
     dfs = []
     all_dfs = {}
     src = "buggy"
-    for system in ["Joint"]:
+    for system in ["RetriGen"]:
         exp_results = []
         for i in range(1, 11):
             result = cal_one_result(data_dir, src, i, system, "merged_results", scorers)
