@@ -41,10 +41,7 @@ tips: torch version may depend on CUDA version, so you should check the version 
 
 ## Fine-tuned model and data
 
-Due to the huge model size, we are unable to upload trained models to the anonymous website. 
-All trained models will be available upon accecption.
-
-
+Our fine-tuned model can be access by [Google Drive](https://drive.google.com/drive/folders/1gDaAWeWHdJ__BnnqTIUCES5cghpKBDb5?usp=sharing)
 
 Raw data are in `./RetriGen/dataset` folder, following commands below to get dataset after Retrival
 

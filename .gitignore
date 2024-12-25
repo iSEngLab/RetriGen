@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+!d4j/lib/tree_sitter/my-languages.so
 
 **/datas
 **/saveD_models

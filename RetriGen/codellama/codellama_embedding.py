@@ -18,7 +18,7 @@ def request_embedding_multi(session: requests.session, prompts: List[str], job_i
 
 def request_embedding(session: requests.session, prompt: str):
     data = {
-        "model": "codellama:7b",
+        "model": "codellama:7b-code-fp16",
         "prompt": prompt
     }
     headers = {

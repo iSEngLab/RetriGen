@@ -4,9 +4,10 @@ import logging
 import transformers
 from dataclasses import dataclass, field
 from tqdm import tqdm
-from configs import read_csv_examples
 from langchain_ollama import OllamaEmbeddings
 from typing import List, Dict
+
+from configs import read_examples
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     level=logging.INFO)
@@ -58,7 +59,7 @@ def main():
     if not os.path.exists(embedding_args.output_dir):
         os.makedirs(embedding_args.output_dir)
 
-    examples = read_csv_examples(embedding_args.file_path)
+    examples = read_examples(embedding_args.file_path)
     batch_size = embedding_args.batch_size
 
     params = get_param_generator(examples, batch_size)

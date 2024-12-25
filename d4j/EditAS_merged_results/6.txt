@@ -1,0 +1,9 @@
+Jsoup/41
+Time/1
+Chart/17
+JxPath/9
+JxPath/16
+Closure/56
+Compress/6
+Chart/22
+Closure/28

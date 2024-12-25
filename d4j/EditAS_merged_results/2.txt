@@ -1,0 +1,7 @@
+JxPath/12
+JxPath/9
+JxPath/16
+Jsoup/71
+Compress/6
+Math/22
+JxPath/1
