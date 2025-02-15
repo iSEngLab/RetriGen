@@ -183,7 +183,7 @@ after reproduce the result, you can use RQ1 code to calc accuracy and CodeBLEU
 
 ## RQ3
 
-**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in our [Appendix.pdf](https://anonymous.4open.science/r/RetriGen/Appendix.pdf)**
+**The Appendix Table showing comparisons of selected PLMs in RQ3 is uploaded in our [Appendix.pdf](https://github.com/iSEngLab/RetriGen/blob/main/Appendix.pdf)**
 
 run the following commands in the model you want to reproduce the result in RQ3:
 
